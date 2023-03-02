@@ -1,0 +1,40 @@
+<div
+  class="container"
+  style="
+    height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  "
+>
+  <form class="border border-secondary rounded py-4" style="width: 60%;" method="post" action="/ragister">
+    <div class="container">
+        <div class="form-outline mb-4">
+          <label class="form-label" for="form2Example2">name</label>
+          <input type="text" id="form2Example2" name="name" class="form-control" />
+        </div>
+    
+        <!-- Email input -->
+        <div class="form-outline mb-4">
+          <label class="form-label" for="form2Example1">Email address</label>
+          <input type="email" id="form2Example1" name="email" class="form-control" />
+        </div>
+    
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+          <label class="form-label" for="form2Example2">Password</label>
+          <input type="password" id="form2Example2" name="password" class="form-control" />
+        </div>
+    
+        <div class="form-outline mb-4">
+          <label class="form-label" for="form2Example2">Conform Password</label>
+          <input type="password" id="form2Example2" name="conformPassword" class="form-control" />
+        </div>
+    
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Log in</button>
+    </div>
+  </form>
+  <a class="pt-2" href="/login">Alredy Account</a>
+</div>

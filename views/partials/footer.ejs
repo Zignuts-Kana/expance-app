@@ -1,0 +1,36 @@
+<!-- Footer-->
+<footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p>
+    </div>
+  </footer>
+  <!-- Bootstrap core JS-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    const navLogOut = document.getElementById('navLogOut');
+    if (navLogOut) {
+      function logOutClicked() {
+        let isExecuted = confirm(`Are you sure about Logout?`);
+        if (isExecuted) {
+          const userAction = async () => {
+            const response = await fetch(`http://localhost:3000/user/logOut`, {
+              method: "DELETE",
+              headers: {
+                "Authorization":`Bearer ${localStorage.getItem('token')}`
+              },
+            });
+          };
+          
+          userAction();
+          localStorage.removeItem('user');
+          localStorage.removeItem('token');
+  
+          return window.location.href = "http://localhost:3000/";
+        }
+      }
+    }
+  </script>
+  </body>
+  
+  </html>

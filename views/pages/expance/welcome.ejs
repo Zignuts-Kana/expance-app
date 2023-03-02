@@ -1,0 +1,71 @@
+<%- include('../../partials/header.ejs') %>
+<div class="container pt-5 pb-4">
+    <h1>Hello Name</h1>
+    <hr />
+    <p>
+      Welcome to home page of <strong>Expance Manager</strong>,here you can show
+      your accounts and request of account sharing.
+    </p>
+    <p>
+      By just click you can Accept or Reject those.And you can edit in you as
+      well as patners account.
+    </p>
+
+    <!-- <div class="buttons">
+      <a class="btn btn-info" href="/account/profile">Update my email</a>
+      <button class="btn btn-outline-info ml-2" @click="clickOpenExampleModalButton()">Open a modal</button>
+    </div> -->
+  </div>
+  <div class="container">
+    <hr />
+    <div class="container card">
+      <div class="row">
+        <div class="card-body col-7">
+          <h5> List of User Accounts</h5>
+          <div class="row">
+            <div class="col-6">
+              <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">Card title</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">Card title</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body col-5">
+          <h5> List of Requests</h5>
+          <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong>
+              <button type="button" class="close mx-5" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&check;</span>
+              </button>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <p>list of patners</p>
+      <h5> List of Patners</h5>
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%- include('../../partials/footer.ejs') %>
