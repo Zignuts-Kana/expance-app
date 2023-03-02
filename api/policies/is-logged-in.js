@@ -9,7 +9,6 @@
  *   https://sailsjs.com/docs/concepts/policies/access-control-and-permissions
  */
 module.exports = async function (req, res, proceed) {
-  console.log('here1');
   let loggedInUser;
   if (req.headers['authorization']) {
     const token = req.headers['authorization'].replace('Bearer ', '');
@@ -29,7 +28,6 @@ module.exports = async function (req, res, proceed) {
     loggedInUser = user;
     req.session.userId = user.id;
   }
-  console.log('here');
   if (!loggedInUser) {
     return res.redirect('/login');
   }

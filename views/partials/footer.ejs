@@ -1,20 +1,43 @@
 <!-- Footer-->
-<footer class="py-5 bg-dark">
+<footer class="py-3 mt-3 bg-dark">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p>
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
     </div>
   </footer>
   <!-- Bootstrap core JS-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   
   <script>
+    <% if (typeof user !== undefined && typeof token !== undefined) { %>
+      console.log('here');
+      const user = {
+        _id :'<%- user.id %>',
+        token:'<%- token.token %>'
+      }
+      localStorage.setItem('user',JSON.stringify(user));
+      localStorage.setItem('token','<%-token.token%>');
+      userAction = async()=>{
+        let response = await fetch('http://localhost:1337/welcome',{
+          method:'GET',
+          headers:{
+            'Accept': 'text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*',
+            'Authorization':`Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        response =await response.text();
+        document.write(response);
+      }
+      userAction()
+
+      // window.location.href='http://localhost:1337/';
+    <% } %>
     const navLogOut = document.getElementById('navLogOut');
     if (navLogOut) {
       function logOutClicked() {
         let isExecuted = confirm(`Are you sure about Logout?`);
         if (isExecuted) {
           const userAction = async () => {
-            const response = await fetch(`http://localhost:3000/user/logOut`, {
+            const response = await fetch(`http://localhost:1337/user/logOut`, {
               method: "DELETE",
               headers: {
                 "Authorization":`Bearer ${localStorage.getItem('token')}`
@@ -32,5 +55,4 @@
     }
   </script>
   </body>
-  
   </html>

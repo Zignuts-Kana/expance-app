@@ -153,8 +153,6 @@ module.exports = {
     //     console.log('Email sent successfully');
     //   }
     // });
-    console.log(template);
-    console.log(_.startsWith(path.basename(template)));
     if (!_.startsWith(path.basename(template), 'email-')) {
       sails.log.warn(
         'The "template" that was passed in to `sendTemplateEmail()` does not begin with '+
@@ -276,9 +274,7 @@ module.exports = {
       };
 
       // var deferred = sails.helpers.sendgrid.sendHtmlEmail.with(messageData);
-      console.log('ensureAck',ensureAck);
       const deferred = transporter.sendMail(messageData);
-      console.log('deferred',deferred);
       if (ensureAck) {
         await deferred;
       } else {

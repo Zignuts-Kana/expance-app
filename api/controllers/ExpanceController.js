@@ -96,7 +96,7 @@ module.exports = {
         patnerId = owner.id;
         owner = await Account.findOne({id:req.params.id}).select('owner -_id');
       }
-      const updatedUser = await Expance.update({id}).set({amount,isDebit,isShared,patnerId,accountId,owner:owner.id}).fatch();
+      const updatedUser = await Expance.update({id}).set({amount,isDebit,isShared,patnerId,accountId,owner:owner.id}).fetch();
       console.log(updatedUser);
     } catch (error) {
       console.log(error);
@@ -106,7 +106,7 @@ module.exports = {
   deleteUser : async(req,res)=>{
     try {
       const id = req.params.id;
-      const deletedUser = await Expance.delete({id}).fatch();
+      const deletedUser = await Expance.delete({id}).fetch();
       console.log(deletedUser);
     } catch (error) {
       console.log(error);

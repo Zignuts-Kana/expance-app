@@ -21,7 +21,7 @@ module.exports = {
       const id = req.params.id;
       const {emailAddress,fullname} = req.body;
 
-      const updatedAccount = await Account.update({id}).set({emailAddress,fullname}).fatch();
+      const updatedAccount = await Account.update({id}).set({emailAddress,fullname}).fetch();
       console.log(updatedAccount);
     } catch (error) {
       console.log(error);
@@ -31,7 +31,7 @@ module.exports = {
   deleteAccount : async(req,res)=>{
     try {
       const id = req.params.id;
-      const deletedAccount = await Account.delete({id}).fatch();
+      const deletedAccount = await Account.delete({id}).fetch();
       console.log(deletedAccount);
     } catch (error) {
       console.log(error);
@@ -49,10 +49,10 @@ module.exports = {
         return res.send({Message:'Name alredy taken!'});
       }
 
-      const createAccount = await Account.create({accountNumber,owner:ownerId,accountName}).fetch();
+      const createAccount = await Account.create({accountNumber,owner:user.id,accountName}).fetch();
       user.accounts.push(createAccount.id);
       User.update({owner:user.id}).set(user);
-      return res.render('pages/expance/expanceAccount',{expances:[],pandingPatner:[],AcceptPatner:[]});
+      return res.view('pages/expance/account',{expances:[],pandingPatner:[],AcceptPatner:[]});
     } catch (error) {
       console.log(error);
       return res.status(500).send(error);
@@ -61,8 +61,8 @@ module.exports = {
     try {
       const user = req.user;
       const accountId = req.params.id;
-      const expances = await Expance.find({accountId:accountId.id}).fatch();
-      const allRequest = await Patner.find({accountId:accountId.id}).fatch();
+      const expances = await Expance.find({accountId:accountId.id}).fetch();
+      const allRequest = await Patner.find({accountId:accountId.id}).fetch();
       const AcceptPatner = allRequest.filter((request)=>{
         return request.isAccept === true;
       });
