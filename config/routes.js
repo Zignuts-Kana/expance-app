@@ -19,10 +19,13 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'GET /welcome': 'UserController.getwelcomePage',
-  'GET /': {view:'pages/expance/welcome'},
+  // 'GET /welcome': 'UserController.getwelcomePage',
+  'GET /': 'UserController.getwelcomePage',
+  // 'GET /': {view:'pages/expance/sendPatnerRequest'},
   // 'GET /account':{view:'pages/expance/account'},
-  'GET /account':'AccountController.getAccountView',
+  // 'GET /account':'AccountController.getAccountView',
+  'GET /user/:id':'UserController.getUserPage',
+  'GET /account/:id':'AccountController.getAccountOfUser',
   'GET /ragister':{view:'pages/ragister'},
   'GET /login':{view:'pages/login'},
 

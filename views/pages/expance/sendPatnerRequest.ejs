@@ -1,0 +1,64 @@
+<%- include('../../partials/header.ejs') %>
+<div
+  class="container"
+  style="
+    height: 85.6dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  "
+>
+<form class="border border-secondary rounded py-4" style="width: 60%;">
+    <div class="container">
+        <% if(typeof user != 'undefined' && user.length ){%>
+        <div class="form-group">
+            <label for="chooseOwner">Choose Owner</label>
+            <select class="form-control" id="chooseOwner" required>
+              <option></option>
+              <%for(let i=0;i<user.length;i++){%>
+              <option value=<%- user[i].id%>><%- user[i].fullName %></option>
+              <%}%>
+            </select>
+          </div>
+        <%}%>
+          <div class="form-group">
+            <label for="chooseAccount">Choose Account</label>
+            <select class="form-control" id="chooseAccount" required>
+                
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block mb-4">Log in</button>
+    </div>
+</form>
+<button class="btn btn-secondery mt-4" onclick="history.back()">Back</button>
+</div>
+<!-- <script>
+const chooseAccount = document.getElementById('chooseAccount');
+const chooseOwner = document.getElementById('chooseOwner');
+if (chooseAccount && chooseOwner) {
+    chooseOwner.addEventListener('change',()=>{
+        const ownerId = chooseOwner.value;
+        userAction = async()=>{
+        let response = await fetch(`http://localhost:1337/user/${ownerId}/accounts`,{
+          method:'GET',
+          headers:{
+            'Accept': 'text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*',
+            'Authorization':`Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        response =await response.text();
+        console.log(response);
+        let html='<option></option>\n';
+        response.formEach((account)=>{
+            html = html + `<option value="${account.id}">${account.accountName}</option>\n`;
+        })
+
+        chooseAccount.innerHTML = html;
+        // document.write(response);
+      }
+      userAction()  
+    })
+}
+</script> -->
+<%- include('../../partials/footer.ejs') %>
