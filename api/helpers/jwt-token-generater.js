@@ -15,7 +15,8 @@ module.exports = {
 
   fn: function (id) {
     const jwt = require('jsonwebtoken');
-    const token = jwt.sign({_id:id},'ThisIsSecretFro1432',{ expiresIn: 24*60*60*1000 });
+    console.log(id);
+    const token = jwt.sign({_id:id.id},'ThisIsSecretFro1432',{ expiresIn: 24*60*60*1000 });
     return {token};
   },
 };

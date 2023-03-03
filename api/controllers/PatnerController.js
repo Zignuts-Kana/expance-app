@@ -11,7 +11,7 @@ module.exports = {
       const owner = req.user;
       const patnerEmail = req.body.email;
       const accountId = req.params.id;
-      const patnerReq = await Patner.create({accountId,owner:owner.id,patnerEmail}).fatch();
+      const patnerReq = await Patner.create({accountId,owner:owner.id,patnerEmail}).fetch();
       console.log(patnerReq);
     } catch (error) {
       console.log(error);
@@ -20,7 +20,7 @@ module.exports = {
   },reqAccept : async (req,res)=>{
     try {
       const expanceId = req.params.id;
-      const expanceReq = await Patner.findOne({id:expanceId}).fatch();
+      const expanceReq = await Patner.findOne({id:expanceId}).fetch();
       expanceReq.isAccept = true;
       const updateExpance = await Patner.update({id:expanceId}).set(expanceReq);
       console.log(updateExpance);

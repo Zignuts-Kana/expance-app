@@ -21,7 +21,7 @@ module.exports = {
       const id = req.params.id;
       const {emailAddress,fullname} = req.body;
 
-      const updatedUser = await User.update({id}).set({emailAddress,fullname}).fatch();
+      const updatedUser = await User.update({id}).set({emailAddress,fullname}).fetch();
       console.log(updatedUser);
     } catch (error) {
       console.log(error);
@@ -31,7 +31,7 @@ module.exports = {
   deleteUser : async(req,res)=>{
     try {
       const id = req.params.id;
-      const deletedUser = await User.delete({id}).fatch();
+      const deletedUser = await User.delete({id}).fetch();
       console.log(deletedUser);
     } catch (error) {
       console.log(error);
@@ -46,8 +46,9 @@ module.exports = {
         return res.send({Message:'password and conformPassword is miss match!'});
       }
       const hashPassword = bcryptjs.hashSync(password, 8);
-      const user = await User.create({fullName:name,emailAddress:email,password:hashPassword});
-      const token = sails.helpers.jwtTokenGenerater(user);
+      const user = await User.create({fullName:name,emailAddress:email,password:hashPassword}).fetch();
+      const token = sails.helpers.jwtTokenGenerater(user.id);
+      console.log(token);
       //send Welcome mail
       sails.helpers.emailSender.with({
         to: user.emailAddress,
@@ -62,7 +63,7 @@ module.exports = {
       req.user = user;
       return await createNewAccount(req,res);
       // const updateUser = User.update({owner:user.id}).set(user);
-      // const allAccounts = await User.find({owner:user.id}).fatch();
+      // const allAccounts = await User.find({owner:user.id}).fetch();
       // const allRequest = await Patner.find({patnerEmail:user.emailAddress});
     } catch (error) {
       console.log(error);
@@ -83,14 +84,15 @@ module.exports = {
         return res.status(401).render('500.ejs', { error: 'Credencials Miss Mach!' });
       }
 
-      const token = sails.helpers.jwtTokenGenerater({ _id: user._id });
-      res.render('/',{user,token});
+      const token = sails.helpers.jwtTokenGenerater(user._id);
+      return res.render('pages/expance/welcome',{user,token});
     } catch (error) {
       console.log(error);
       return res.status(500).send(error);
     }
   },getwelcomePage:async (req,res)=>{
-    res.view('pages/welcome');
+    console.log(req.user);
+    res.view('pages/expance/welcome');
   }
 
 };
