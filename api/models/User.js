@@ -46,6 +46,11 @@ module.exports = {
       defaultsTo:[]
     },
 
+    // accounts:{
+    //   collection: 'acoount',
+    //   via: 'owner',
+    //   through: 'hjkluser'
+    // },
     fullName: {
       type: 'string',
       required: true,

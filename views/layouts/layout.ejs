@@ -111,5 +111,151 @@
     <!--SCRIPTS-->
     <script src="/dependencies/sails.io.js"></script>
     <!--SCRIPTS END-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+     <% if (typeof user != 'undefined' && typeof token != 'undefined') { %>
+      console.log('here');
+      const user = {
+        _id :'<%- user.id %>',
+        token:'<%- token.token %>'
+      }
+      localStorage.setItem('user',JSON.stringify(user));
+      localStorage.setItem('token','<%-token.token%>');
+      // userAction = ()=>{
+      //   let response =fetch('http://localhost:1337/welcome',{
+      //     method:'GET',
+      //     headers:{
+      //       'Accept': 'text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*',
+      //       'Authorization':`Bearer ${localStorage.getItem('token')}`
+      //     }
+      //   });
+      //   response =response.text();
+      //   console.log(response);
+      //   // document.write(response);
+      // }
+      // userAction()
+
+      // // window.location.href='http://localhost:1337/';
+    <% } %>
+    <% if(typeof acount != 'undefined' && account.length){%>
+      localStorage.setItem('account','<%- acount.id %>')
+      <% } %>
+
+    const createExpanceForm = document.getElementById("createExpanceForm");
+    if (createExpanceForm) {
+      createExpanceForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const formData = new FormData(createExpanceForm);
+        let user = localStorage.getItem("user");
+        const account = localStorage.getItem("acount");
+        if (user && account) {
+          user = JSON.parse(user);
+          const userAction = async () => {
+            const response = fetch(
+              `http://localhost:1337/user/${user._id}/account/${account}/expance/create`,
+              {
+                method: "POST",
+                headers: {
+                  Accept:
+                    "text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*",
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+              }
+            );
+            response = await response.text();
+            console.log(response);
+            location.href = `http://localhost:1337/account/${account}`;
+            // document.write(response);
+          };
+          userAction();
+        }
+      });
+    }
+
+    const editExpanceForm = document.getElementById("editExpanceForm");
+    if (editExpanceForm) {
+        editExpanceForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const formData = new FormData(editExpanceForm);
+        let user = localStorage.getItem("user");
+        const account = localStorage.getItem("acount");
+        let expance = location.href;
+        expance = expance.split('/edit/')[1];
+        if (user && account) {
+          user = JSON.parse(user);
+          const userAction = async () => {
+            const response = fetch(
+              `http://localhost:1337/user/${user._id}/account/${account}/expance/edit/${expance}`,
+              {
+                method: "POST",
+                headers: {
+                  Accept:
+                    "text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*",
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+              }
+            );
+            response = await response.text();
+            console.log(response);
+            location.href = `http://localhost:1337/account/${account}`;
+            // document.write(response);
+          };
+          userAction();
+        }
+      });
+    }
+
+    const chooseAccount = document.getElementById('chooseAccount');
+    const chooseOwner = document.getElementById('chooseOwner');
+    if (chooseAccount && chooseOwner) {
+        chooseOwner.addEventListener('change',()=>{
+            const ownerId = chooseOwner.value;
+            userAction = ()=>{
+            let response = await fetch(`http://localhost:1337/user/${ownerId}/accounts`,{
+              method:'GET',
+              headers:{
+                'Accept': 'text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*',
+                'Authorization':`Bearer ${localStorage.getItem('token')}`
+              }
+            });
+            response =await response.text();
+            console.log(response);
+            let html='<option></option>\n';
+            response.formEach((account)=>{
+                html = html + `<option value="${account.id}">${account.accountName}</option>\n`;
+            })
+    
+            chooseAccount.innerHTML = html;
+            // document.write(response);
+          }
+          userAction()  
+        })
+    }
+
+    const navLogOut = document.getElementById('navLogOut');
+    if (navLogOut) {
+
+      navLogOut.addEventListener('click',()=> {
+        let isExecuted = confirm(`Are you sure about Logout?`);
+        if (isExecuted) {
+          const userAction = async () => {
+            const response = await fetch(`http://localhost:1337/user/logOut`, {
+              method: "DELETE",
+              headers: {
+                "Authorization":`Bearer ${localStorage.getItem('token')}`
+              },
+            });
+          };
+
+          userAction();
+          localStorage.removeItem('user');
+          localStorage.removeItem('token');
+          localStorage.removeItem('account');
+
+          return window.location.href = "http://localhost:1337/";
+        }
+      })
+    }
+  </script>
   </body>
 </html>

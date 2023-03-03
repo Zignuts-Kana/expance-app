@@ -48,6 +48,7 @@ module.exports = {
 
     isPatner:{
       type: 'boolean',
+      defaultsTo : false,
     },
   },
 

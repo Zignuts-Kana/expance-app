@@ -18,9 +18,9 @@ module.exports.policies = {
   ***************************************************************************/
 
   // '*': true,
-  'welocome':'is-logged-in',
   AccountController:{
-    '*': 'is-logged-in',
+    '*': true,
+    'getAccountOfUser':true
   },
   ExpanceController:{
     '*':'is-logged-in',
@@ -32,7 +32,9 @@ module.exports.policies = {
     '*':'is-logged-in',
     'ragisterUser':true,
     'loginUser':true,
-    "getwelcomePage":true,
-  }
+    'getUserPage':true,
+    // "getwelcomePage":true,
+  },
+  'expance/*':'is-logged-in',
 
 };

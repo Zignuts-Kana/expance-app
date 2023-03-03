@@ -8,9 +8,23 @@
 module.exports = {
   getAccountOfUser : async (req,res) => {
     try {
-      const id = req.params.id;
-      const allAccountsOfUser = await Account.find({owner:id});
-      console.log(allAccountsOfUser);
+      const id= req.params.id;
+      const account = await Account.findOne({id});
+      if (!account) {
+        return res.status(400).send({Message:'Account Not Found!'});
+      }
+      const user = await User.findOne({id:account.owner});
+      const expances = await Expance.find({accountId:id});
+      const allRequest = await Patner.find({accountId:id});
+      const AcceptPatner = allRequest.filter((request)=>{
+        return request.isAccept === true;
+      });
+      const pandingPatner = allRequest.filter((request)=>{
+        return request.isAccept !== true && (request.owner === account.owner) && (id == request.accountId);
+      });
+      //set isPatner in front for patner tranjection.
+      console.log(account,expances,pandingPatner,AcceptPatner);
+      return res.view('pages/expance/account',{user,token:user.authToken,account,expances,pandingPatner,AcceptPatner});
     } catch (error) {
       console.log(error);
       return res.status(500).send(error);
@@ -50,36 +64,39 @@ module.exports = {
       }
 
       const createAccount = await Account.create({accountNumber,owner:user.id,accountName}).fetch();
+      console.log(createAccount);
       user.accounts.push(createAccount.id);
-      console.log(user);
       await User.update({id:user.id}).set(user);
-      return res.view('pages/expance/account',{expances:[],pandingPatner:[],AcceptPatner:[]});
+      // return res.view('pages/expance/account',{expances:[],pandingPatner:[],AcceptPatner:[]});
+      return res.redirect(`/account/${createAccount.id}`);
     } catch (error) {
       console.log(error);
       return res.status(500).send(error);
     }
-  },getAccountPage:async (req,res)=>{
-    try {
-      const user = req.user;
-      const accountId = req.params.id;
-      const expances = await Expance.find({accountId:accountId.id}).fetch();
-      const allRequest = await Patner.find({accountId:accountId.id}).fetch();
-      const AcceptPatner = allRequest.filter((request)=>{
-        return request.isAccept === true;
-      });
-      const pandingPatner = allRequest.filter((request)=>{
-        return request.isAccept !== true;
-      });
-      //set isPatner in front for patner tranjection.
-      return res.render('pages/expance/expanceAccount',{expances,pandingPatner,AcceptPatner});
-    } catch (error) {
-      console.log(error);
-      return res.status(500).send(error);
-    }
-  },shareAccount :async (req,res)=>{
+  },
+  // getAccountPage:async (req,res)=>{
+  //   try {
+  //     const user = req.user;
+  //     const accountId = req.params.id;
+  //     const expances = await Expance.find({accountId:accountId.id}).fetch();
+  //     const allRequest = await Patner.find({accountId:accountId.id}).fetch();
+  //     const AcceptPatner = allRequest.filter((request)=>{
+  //       return request.isAccept === true;
+  //     });
+  //     const pandingPatner = allRequest.filter((request)=>{
+  //       return request.isAccept !== true;
+  //     });
+  //     //set isPatner in front for patner tranjection.
+  //     return res.view('pages/expance/account',{expances,pandingPatner,AcceptPatner});
+  //   } catch (error) {
+  //     console.log(error);
+  //     return res.status(500).send(error);
+  //   }
+  // },
+  shareAccount :async (req,res)=>{
     //share by deff collection.
   },getAccountView:async (req,res)=>{
-    res.render('pages/expance/expanceAccount');
+    res.view('pages/expance/account');
   }
 
 };

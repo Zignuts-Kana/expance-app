@@ -1,6 +1,6 @@
 <%- include('../../partials/header.ejs') %>
 <div class="container pt-5 pb-4">
-    <h1>Hello Name</h1>
+    <h1>Hello <%- user.fullName %></h1>
     <hr />
     <p>
       Welcome to home page of <strong>Expance Manager</strong>,here you can show
@@ -23,49 +23,58 @@
         <div class="card-body col-7">
           <h5> List of User Accounts</h5>
           <div class="row">
-            <div class="col-6">
-              <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
+            <%if(typeof accounts != 'undefined' && accounts.length){%>
+              <% for(let i=0;i<accounts.length;i++) {%>
+                <div class="col-6">
+                  <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title"><%- accounts[i].accountNumber %></h5>
+                      <p class="card-text"><%- accounts[i].accountName %></p>
+                      <a href="/account/<%- accounts[i].id %>" class="btn btn-primary">Account Details</a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-            </div>
+              <% } %>
+            <% } else {%>
+              <p><strong> No Any Accounts! </strong></p>
+            <% } %>
           </div>
         </div>
         <div class="card-body col-5">
           <h5> List of Requests</h5>
-          <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <strong>Holy guacamole!</strong>
-              <button type="button" class="close mx-5" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&check;</span>
-              </button>
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
+          <% if(typeof newReq != 'undefined' && newReq.length) {%>
+            <%for(let i=0;i<newReq.length;i++){%>
+              <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Request By <%- newReq[i].patnerEmail %></strong>
+                  <a type="button" href="/user/<%- user.id %>/patner/accept/<%- newReq[i].id%>" class="close mx-5" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&check;</span>
+                  </a>
+                  <a type="button" href="/user/<%- user.id %>/patner/delete/<%- newReq[i].id%>" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </a>
+              </div>
+              <%}%>
+          <%}else{%>
+            <p><strong> No Any New Request! </strong></p>
+          <% } %>
         </div>
       </div>
       <hr />
-      <p>list of patners</p>
-      <h5> List of Patners</h5>
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+      <h5> List of Patner Accounts</h5>
+      <% if(typeof patnerWiths != 'undefined' && patnerWiths.length){ %>
+      <% for(let i=0;i<patnerWiths.length;i++){%>
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title"><%-patnerWiths[i].patnerEmail %></h5>
+            <p class="card-text">Patner <strong><%-patnerWiths[i].patnerEmail %>'s Account <strong><%- patnerWiths[i].accountId%></strong> Connected With You.</strong>.</p>
+            <p class="card-text">If you wont to edit in account then simply click button! </p>
+            <a href='/account/<%- account.id%>/patner/edit/<%patnerWiths[i].id%>' class="btn btn-primery">View Account</a>
+          </div>
         </div>
-      </div>
+        <%}%>
+      <% } else {%>
+        <p><strong> No Any Patner Accounts! </strong></p>
+      <% } %>
     </div>
   </div>
   <%- include('../../partials/footer.ejs') %>

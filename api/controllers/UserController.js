@@ -15,6 +15,20 @@ module.exports = {
       console.log(error);
       return res.status(500).send(error);
     }
+  },getUserPage:async(req,res)=>{
+    try {
+      const id = req.params.id;
+      console.log(id);
+      const user = await User.findOne({id:id});
+      const accounts = await Account.find({owner:id});
+      const patners = await Patner.find({patnerEmail:user.emailAddress});
+      const patnerWiths = patners.filter((patner)=> patner.isAccept === true);
+      const newReqs = patners.filter((patner)=> patner.isAccept === false);
+      res.view('pages/expance/welcome',{user,accounts,patnerWiths,newReqs,token:user.authToken},{async:true});
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send(error);
+    }
   },
   editUser : async(req,res)=>{
     try {
@@ -46,21 +60,22 @@ module.exports = {
         return res.send({Message:'password and conformPassword is miss match!'});
       }
       const hashPassword = bcryptjs.hashSync(password, 8);
-      const user = await User.create({fullName:name,emailAddress:email,password:hashPassword}).fetch();
+      let user = await User.create({fullName:name,emailAddress:email,password:hashPassword}).fetch();
       const token = sails.helpers.jwtTokenGenerater(user.id);
-      console.log(token);
+      user = await User.update({id:user.id}).set({authToken:token.token}).fetch();
+      console.log(user);
       //send Welcome mail
       sails.helpers.emailSender.with({
-        to: user.emailAddress,
+        to: user[0].emailAddress,
         subject: 'Welcome to Expance Management Group,Makes easy your life with Money Management',
         template: 'email-welcome-mail',
         layout: false,
         templateData: {
-          fullName: user.fullName,
+          fullName: user[0].fullName,
           token:token.token,
         }
       });
-      req.user = user;
+      req.user = user[0];
       return await createNewAccount(req,res);
       // const updateUser = User.update({owner:user.id}).set(user);
       // const allAccounts = await User.find({owner:user.id}).fetch();
@@ -75,17 +90,20 @@ module.exports = {
       let user = await User.findOne({ emailAddress:email });
 
       if (!user || !user.password) {
-        return res.status(400).render('500.ejs', { error: 'User Not Found!' });
+        return res.status(400).view('500.ejs', { error: 'User Not Found!' });
       }
 
       const matchPassword = bcryptjs.compareSync(password, user.password);
 
       if (!matchPassword) {
-        return res.status(401).render('500.ejs', { error: 'Credencials Miss Mach!' });
+        return res.status(401).view('500.ejs', { error: 'Credencials Miss Mach!' });
       }
 
       const token = sails.helpers.jwtTokenGenerater(user._id);
-      return res.render('pages/expance/welcome',{user,token});
+      user = await User.update({id:user.id}).set({authToken:token.token}).fetch();
+      user = user[0];
+      return res.redirect(`/user/${user.id}`);
+      // return res.view('pages/expance/welcome',{user,token});
     } catch (error) {
       console.log(error);
       return res.status(500).send(error);
@@ -93,7 +111,7 @@ module.exports = {
   },getwelcomePage:async (req,res)=>{
     console.log(req.user);
     res.view('pages/expance/welcome');
-  }
+  },
 
 };
 

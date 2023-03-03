@@ -1,9 +1,9 @@
-<%- include('../../partials/header.ejs') %>
+<%- include ('../../partials/header.ejs') %>
   <div class="container pt-5 pb-4">
-    <h1>Hello Name</h1>
+    <h1>Account - <strong><%- account.accountName%></strong></h1>
     <hr />
     <p>
-      Welcome to home page of <strong>Expance Manager</strong>,here you can show
+      Welcome to account page of <strong>Expance Manager</strong>,here you can show
       your accounts and request of account sharing.
     </p>
     <p>
@@ -20,43 +20,130 @@
     <hr />
     <div class="container card">
       <div class="row">
+        <p> List Of All Expances.</p>
         <div class="card-body col-7">
-            <ul class="list-group">
-                <li class="list-group-item">A simple default list group item</li>
 
-                <li class="list-group-item list-group-item-primary">A simple primary list group item</li>
-                <li class="list-group-item list-group-item-secondary">A simple secondary list group item</li>
-                <li class="list-group-item list-group-item-success">A simple success list group item</li>
-                <li class="list-group-item list-group-item-danger">A simple danger list group item</li>
-                <li class="list-group-item list-group-item-warning">A simple warning list group item</li>
-                <li class="list-group-item list-group-item-info">A simple info list group item</li>
-                <li class="list-group-item list-group-item-light">A simple light list group item</li>
-                <li class="list-group-item list-group-item-dark">A simple dark list group item</li>
+          <!-- for test -->
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-danger">
+              <div class="row">
+                <strong>Holy guacamole!</strong>
+                <a type="button" href='/account/<%- expance[i].accountId %>/edit/<%- expance[i].id %>' class="close mx-5" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&#9998;</span>
+                </a>
+                <a type="button" href='/account/<%- expance[i].accountId %>/delete/<%- expance[i].id %>' class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </a>
+              </div>
+            </li>
+          </ul>
+
+          <% if(typeof expances != 'undefined' && expances.length){%>
+            <ul class="list-group">
+                <%- for(let i=0 ; i<expances.length ; i++ ) {%>
+
+                  <%if(expance[i].isPatner === false && expance[i].isDebited === false){%>
+                    <li class="list-group-item list-group-item-success">
+                      <div class="row">
+                        <strong>Holy guacamole!</strong>
+                        <a type="button" href='/account/<%- expance[i].accountId %>/edit/<%- expance[i].id %>' class="close mx-5" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&#9998;</span>
+                        </a>
+                        <a type="button" href='/account/<%- expance[i].accountId %>/delete/<%- expance[i].id %>' class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </a>
+                      </div>
+                    </li>
+                  <%}%>
+
+                  <%if(expance[i].isPatner === false && expance[i].isDebited === true){%>
+                    <li class="list-group-item list-group-item-danger">
+                      <div class="row">
+                        <strong>Holy guacamole!</strong>
+                        <a type="button" href='/account/<%- expance[i].accountId %>/edit/<%- expance[i].id %>' class="close mx-5" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&#9998;</span>
+                        </a>
+                        <a type="button" href='/account/<%- expance[i].accountId %>/delete/<%- expance[i].id %>' class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </a>
+                      </div>
+                    </li>
+                  <%}%>
+
+                  <%if(expance[i].isPatner === true && expance[i].isDebited === false){%>
+                    <li class="list-group-item list-group-item-success">
+                      <div class="row">
+                        <strong>Holy guacamole!</strong>
+                        <a type="button" href='/account/<%- expance[i].accountId %>/edit/<%- expance[i].id %>' class="close mx-5" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&#9998;</span>
+                        </a>
+                        <a type="button" href='/account/<%- expance[i].accountId %>/delete/<%- expance[i].id %>' class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </a>
+                      </div>
+                    </li>
+                  <%}%>
+
+                  <%if(expance[i].isPatner === true && expance[i].isDebited === true){%>
+                    <li class="list-group-item list-group-item-danger">
+                      <div class="row">
+                        <strong>Holy guacamole!</strong>
+                        <a type="button" href='/account/<%- expance[i].accountId %>/edit/<%- expance[i].id %>' class="close mx-5" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&#9998;</span>
+                        </a>
+                        <a type="button" href='/account/<%- expance[i].accountId %>/delete/<%- expance[i].id %>' class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </a>
+                      </div>
+                    </li>
+                  <%}%>
+
+                <%}%>
             </ul>
+          <%}else{%>
+            <p><strong>No Any Record Yet!</strong></p>
+          <%}%>
         </div>
         <div class="card-body col-5">
-          <h5> List of Requests</h5>
-          <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <strong>Holy guacamole!</strong>
-              <button type="button" class="close mx-5" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&check;</span>
-              </button>
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
+          <h5> List of Requests To Access This Acount :</h5>
+          <% if(typeof pandingPatner != 'undefined' && pandingPatner.length){%>
+            <%for(let i=0;i<pandingPatner.length;i++){%>
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+              <strong>Request By <%- pandingPatner[i].patnerEmail %></strong>
+                <a type="button" href="/account/<%- account.id %>/patner/accept/<%- pandingPatner[i].id%>" class="close mx-5" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&check;</span>
+                </a>
+                <a type="button" href="/account/<%- account.id %>/patner/delete/<%- pandingPatner[i].id%>" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </a>
+            </div>
+            <%}%>
+          <%}else{%>
+            <p><strong> No Any Patner Request!</strong></p>
+          <%}%>
         </div>
       </div>
       <hr />
-      <p>list of patners</p>
-      <h5> List of Patners</h5>
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+      <h5> List of Patners Of This Account :</h5>
+      <% if(typeof patnerWiths != 'undefined' && patnerWiths.length){ %>
+        <% for(let i=0;i<patnerWiths.length;i++){%>
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title"><%-patnerWiths[i].patnerEmail %></h5>
+            <p class="card-text">Acount <strong><%- account.accountName %></strong> is Connected With Patner <strong><%-patnerWiths[i].patnerEmail %></strong>.</p>
+            <p class="card-text">If you wont to access back then simply click button! </p>
+            <a href='/account/<%- account.id%>/patner/delete/<%patnerWiths[i].id%>' class="btn btn-danger">Access Back</a>
+          </div>
         </div>
-      </div>
+        <%}%>
+        <% } else {%>
+          <p><strong> No Any Patner Accounts! </strong></p>
+        <% } %>
     </div>
   </div>
-  <%- include('../../partials/footer.ejs') %>
+  <!-- <script>
+    <% if(typeof acount != 'undefined' && account.length){%>
+      localStorage.setItem('account','<%- acount.id %>')
+      <% } %>
+  </script> -->
+  <%- include ('../../partials/footer.ejs') %>

@@ -39,7 +39,6 @@ module.exports = {
 
     owner: {
       model: 'User',
-      required:true
     },
 
     accountName: {
