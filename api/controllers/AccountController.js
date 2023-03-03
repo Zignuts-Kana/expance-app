@@ -51,7 +51,8 @@ module.exports = {
 
       const createAccount = await Account.create({accountNumber,owner:user.id,accountName}).fetch();
       user.accounts.push(createAccount.id);
-      User.update({owner:user.id}).set(user);
+      console.log(user);
+      await User.update({id:user.id}).set(user);
       return res.view('pages/expance/account',{expances:[],pandingPatner:[],AcceptPatner:[]});
     } catch (error) {
       console.log(error);

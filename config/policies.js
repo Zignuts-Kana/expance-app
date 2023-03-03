@@ -32,6 +32,7 @@ module.exports.policies = {
     '*':'is-logged-in',
     'ragisterUser':true,
     'loginUser':true,
+    "getwelcomePage":true,
   }
 
 };

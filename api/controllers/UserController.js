@@ -91,7 +91,8 @@ module.exports = {
       return res.status(500).send(error);
     }
   },getwelcomePage:async (req,res)=>{
-    res.view('pages/welcome');
+    console.log(req.user);
+    res.view('pages/expance/welcome');
   }
 
 };

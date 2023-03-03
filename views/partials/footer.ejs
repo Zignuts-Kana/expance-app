@@ -6,9 +6,9 @@
   </footer>
   <!-- Bootstrap core JS-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  
+
   <script>
-    <% if (typeof user !== undefined && typeof token !== undefined) { %>
+    <% if (typeof user != 'undefined' && typeof token != 'undefined') { %>
       console.log('here');
       const user = {
         _id :'<%- user.id %>',
@@ -25,7 +25,8 @@
           }
         });
         response =await response.text();
-        document.write(response);
+        console.log(response);
+        // document.write(response);
       }
       userAction()
 
@@ -44,11 +45,11 @@
               },
             });
           };
-          
+
           userAction();
           localStorage.removeItem('user');
           localStorage.removeItem('token');
-  
+
           return window.location.href = "http://localhost:3000/";
         }
       }
