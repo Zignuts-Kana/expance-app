@@ -9,12 +9,12 @@
     flex-direction: column;
   "
 >
-<form class="border border-secondary rounded py-4" style="width: 60%;">
+<form class="border border-secondary rounded py-4" id="patnerReqForm" style="width: 60%;">
     <div class="container">
         <% if(typeof user != 'undefined' && user.length ){%>
         <div class="form-group">
             <label for="chooseOwner">Choose Owner</label>
-            <select class="form-control" id="chooseOwner" required>
+            <select class="form-control" id="chooseOwner" name="ownerId" required>
               <option></option>
               <%for(let i=0;i<user.length;i++){%>
               <option value=<%- user[i].id%>><%- user[i].fullName %></option>
@@ -24,14 +24,14 @@
         <%}%>
           <div class="form-group">
             <label for="chooseAccount">Choose Account</label>
-            <select class="form-control" id="chooseAccount" required>
+            <select class="form-control" id="chooseAccount" name="accountId" required>
                 
             </select>
           </div>
-          <button type="submit" class="btn btn-primary btn-block mb-4">Log in</button>
+          <button type="submit" class="btn btn-outline-success btn-block mb-4">Send Request</button>
     </div>
 </form>
-<button class="btn btn-secondery mt-4" onclick="history.back()">Back</button>
+<button class="btn btn-outline-secondary mt-4" onclick="history.back()">Back</button>
 </div>
 <!-- <script>
 const chooseAccount = document.getElementById('chooseAccount');

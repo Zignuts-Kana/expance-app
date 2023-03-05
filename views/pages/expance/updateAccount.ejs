@@ -1,0 +1,33 @@
+<%- include('../../partials/header.ejs') %>
+<div
+  class="container"
+  style="
+    height: 85.6dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  "
+>
+  <form
+    class="border border-secondary rounded py-4"
+    id="updateAccountForm"
+    style="width: 60%"
+  >
+    <div class="container">
+      <div class="form-group">
+        <label for="exampleInputPassword1">Account Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="accountName"
+          name="accountName"
+          value="<%- account.accountName %>"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-outline-success btn-block my -4">Update</button>
+    </div>
+  </form>
+  <button class="btn btn btn-outline-secondary mt-4" onclick="history.back()">Back</button>
+</div>

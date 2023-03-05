@@ -6,11 +6,24 @@
  */
 
 module.exports = {
+  getExpanceCreatePage : async (req,res)=>{
+    try {
+      const expanceId = req.params.expanceId;
+      if(!expanceId){
+        return res.view('pages/expance/createExpance');
+      }
+      const expance = await Expance.findOne({id:expanceId});
+      return res.view('pages/expance/editExpance',{expance});
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send({Error:error});
+    }
+  },
   getAllExpanceOfAccount : async (req,res)=>{
     try {
       // const user = req.user;
       const accountId = req.params.id;
-      const expances = await Expance.find({accountId}).select('amount isDebited isPatner accountId owner');
+      const expances = await Expance.find({accountId});
       console.log(expances);
       let credit=0; let debit=0;
       expances.forEach(expance => {
@@ -30,7 +43,7 @@ module.exports = {
     try {
       const owner = req.user;
       const accountId = req.params.id;
-      const expances = await Expance.find({owner:owner.id,accountId}).select('amount isDebited isPatner accountId owner');
+      const expances = await Expance.find({owner:owner.id,accountId});
       console.log(expances);
       let credit=0; let debit=0;
       expances.forEach(expance => {
@@ -50,7 +63,7 @@ module.exports = {
     try {
       const owner = req.user;
       const patnerId = req.params.id;
-      const expances = await Expance.find({isPatner:true,owner:owner.id,patnerId}).select('amount isDebited isPatner patnerId accountId owner');
+      const expances = await Expance.find({isPatner:true,owner:owner.id,patnerId});
       console.log(expances);
       let credit=0; let debit=0;
       expances.forEach(expance => {
@@ -68,46 +81,57 @@ module.exports = {
   },
   createExpance:async(req,res)=>{
     try {
-      let owner = req.user;
-      let patnerId;
-      const accountId = req.params.id;
-      const {isDebit,amount} = req.body;
-      const isShared = req.body.isShared?req.body.isShared:undefined;
-      if (isShared) {
-        patnerId = owner.id;
-        owner = await Account.findOne({id:req.params.id}).select('owner -_id');
+      let user = req.user;
+      let isPatner;
+      const accountId = req.params.accountId;
+      const {isDebited,amount} = req.body;
+      const account = await Account.findOne({id:accountId});
+      if (!account) {
+        return res.status(400).send({Message:'Account not found!'});
       }
-      const expance = await Expance.create({amount,isDebit,isShared,patnerId,accountId,owner:owner.id}).fetch();
-      console.log(expance);
+      if (account.owner != user.id) {
+        isPatner='true';
+      }
+      const expance = await Expance.create({amount,isDebited:isDebited == 'on'?true:false,isPatner:isPatner?true:undefined,patnerId:isPatner?user.id:undefined,accountId,owner:account.owner,patnerEmail:isPatner?user.emailAddress:undefined}).fetch();
+      return res.status(201).json(expance);
       // res.view('')
     } catch (error) {
       console.log(error);
       return res.status(500).send(error);
     }
   },
-  editUser : async(req,res)=>{
+  editExpance : async(req,res)=>{
     try {
-      const owner = req.user;
-      const id = req.params.id;
-      const {isDebit,amount} = req.body;
-      const isShared = req.body.isShared?req.body.isShared:undefined;
-      let {accountId,patnerId} = await Expance.findOne({id:req.params.id}).select('accountId patnerId -id');
-      if (isShared) {
-        patnerId = owner.id;
-        owner = await Account.findOne({id:req.params.id}).select('owner -_id');
+      const user = req.user;
+      const expanceId = req.params.expanceId;
+      const expance = await Expance.findOne({id:expanceId});
+      if (!expance) {
+        return res.status(400).send({Message:'Record not found!'});
       }
-      const updatedUser = await Expance.update({id}).set({amount,isDebit,isShared,patnerId,accountId,owner:owner.id}).fetch();
-      console.log(updatedUser);
+      const accountId = req.params.accountId;
+      const {isDebited,amount} = req.body;
+      let isPatner;
+      const account = await Account.findOne({id:accountId});
+      if (!account) {
+        return res.status(400).send({Message:'Account not Found!'});
+      }
+      if (account.owner != user.id) {
+        isPatner:true;
+      }
+      const expanceUpdated = await Expance.create({amount,isDebited:isDebited == 'on'?true:false,isPatner:isPatner?true:undefined,patnerId:isPatner?user.id:undefined,accountId,owner:account.owner,patnerEmail:isPatner?user.emailAddress:undefined}).fetch();
+      return res.status(201).json(expanceUpdated);
     } catch (error) {
       console.log(error);
       return res.status(500).send(error);
     }
   },
-  deleteUser : async(req,res)=>{
+  deleteExpance : async(req,res)=>{
     try {
-      const id = req.params.id;
-      const deletedUser = await Expance.delete({id}).fetch();
-      console.log(deletedUser);
+      const id = req.params.expanceId;
+      const accountId = req.params.accountId ? req.params.accountId : undefined;
+      const deletedExpance = await Expance.destroy({id}).fetch();
+      console.log(deletedExpance);
+      return res.redirect(`http://localhost:1337/account/${accountId}`);
     } catch (error) {
       console.log(error);
       return res.status(500).send(error);

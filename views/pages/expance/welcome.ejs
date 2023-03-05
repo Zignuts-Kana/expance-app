@@ -21,16 +21,26 @@
     <div class="container card">
       <div class="row">
         <div class="card-body col-7">
-          <h5> List of User Accounts</h5>
+          <div class="d-flex flex-row justify-content-between">
+            <h5> List of User Accounts</h5>
+            <a type="button" href='<%- user.id %>/account/create' class="btn border-success rounded text-success">&#10010;</a>
+          </div>
           <div class="row">
             <%if(typeof accounts != 'undefined' && accounts.length){%>
               <% for(let i=0;i<accounts.length;i++) {%>
                 <div class="col-6">
                   <div class="card" style="width: 18rem;">
                     <div class="card-body">
-                      <h5 class="card-title"><%- accounts[i].accountNumber %></h5>
-                      <p class="card-text"><%- accounts[i].accountName %></p>
-                      <a href="/account/<%- accounts[i].id %>" class="btn btn-primary">Account Details</a>
+                      <h5 class="card-title"><%- accounts[i].accountName %></h5>
+                      <p class="card-text"><%- accounts[i].accountNumber %></p>
+                      <div class="row">
+                        <div class="col-6">
+                          <a href="/account/<%- accounts[i].id %>" class="btn btn-block btn-outline-success"> Details</a>
+                        </div>
+                        <div class="col-6">
+                          <a href='/user/<%- user.id%>/account/edit/<%- accounts[i].id %>' class="btn btn-block btn-outline-secondary">Edit</a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -41,15 +51,18 @@
           </div>
         </div>
         <div class="card-body col-5">
-          <h5> List of Requests</h5>
+          <div class="d-flex flex-row justify-content-between">
+            <h5> List of Requests</h5>
+            <a type="button" href="<%- user.id %>/patner/create" class="btn border-success rounded text-success">&#10010;</a>
+          </div>
           <% if(typeof newReq != 'undefined' && newReq.length) {%>
             <%for(let i=0;i<newReq.length;i++){%>
               <div class="alert alert-info alert-dismissible fade show" role="alert">
                 <strong>Request By <%- newReq[i].patnerEmail %></strong>
-                  <a type="button" href="/user/<%- user.id %>/patner/accept/<%- newReq[i].id%>" class="close mx-5" data-dismiss="alert" aria-label="Close">
+                  <a type="button" id="/user/<%- user.id %>/patner/accept/<%- newReq[i].id%>" onclick="alertAcceptClicked(this.id)" href="/user/<%- user.id %>/patner/accept/<%- newReq[i].id%>" class="close mx-5" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&check;</span>
                   </a>
-                  <a type="button" href="/user/<%- user.id %>/patner/delete/<%- newReq[i].id%>" class="close" data-dismiss="alert" aria-label="Close">
+                  <a type="button" id="/user/<%- user.id %>/patner/delete/<%- newReq[i].id%>" onclick="alertPatnerReject(this.id)" href="/user/<%- user.id %>/patner/delete/<%- newReq[i].id%>" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </a>
               </div>
@@ -60,15 +73,25 @@
         </div>
       </div>
       <hr />
-      <h5> List of Patner Accounts</h5>
+      <div class="d-flex flex-row justify-content-between">
+        <h5> List of Patner Accounts</h5>
+        <a type="button" href='<%- user.id %>/patner/create' class="btn border-success rounded text-success">&#10010;</a>
+      </div>
       <% if(typeof patnerWiths != 'undefined' && patnerWiths.length){ %>
       <% for(let i=0;i<patnerWiths.length;i++){%>
         <div class="card" style="width: 18rem;">
           <div class="card-body">
-            <h5 class="card-title"><%-patnerWiths[i].patnerEmail %></h5>
-            <p class="card-text">Patner <strong><%-patnerWiths[i].patnerEmail %>'s Account <strong><%- patnerWiths[i].accountId%></strong> Connected With You.</strong>.</p>
+            <h5 class="card-title"><%-patnerWiths[i].accountNumber %></h5>
+            <p class="card-text">Patner <strong><%-patnerWiths[i].accountName %> Account <strong><%- patnerWiths[i].accountNumber %></strong> Connected With You.</strong>.</p>
             <p class="card-text">If you wont to edit in account then simply click button! </p>
-            <a href='/account/<%- account.id%>/patner/edit/<%patnerWiths[i].id%>' class="btn btn-primery">View Account</a>
+            <div class="row">
+              <div class="col-6">
+                <a href='/user/<%-user.id%>/account/<%- patnerWiths[i].accountId%>' class="btn btn-block btn-outline-success">View </a>
+              </div>
+              <div class="col-6">
+                <button id='/user/<%- user.id%>/patner/delete/<%- patnerWiths[i].id%>' onclick="patnerDeleteClicked(this.id)" class="btn btn-block btn-outline-danger">Leave </button>
+              </div>
+            </div>
           </div>
         </div>
         <%}%>
@@ -77,4 +100,22 @@
       <% } %>
     </div>
   </div>
+  <script>
+    function patnerDeleteClicked(url) {
+      let isExecuted = confirm(`Are you sure about Logout?`);
+      if (isExecuted) {
+        userAction = async ()=>{
+        let response = await fetch(`${url}`,{
+          method:'GET',
+          headers:{
+            'Accept': "*/*,application/json",
+            'Authorization':`Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        location.reload();
+      }
+      userAction()
+      }
+    }
+  </script>
   <%- include('../../partials/footer.ejs') %>

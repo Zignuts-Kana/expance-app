@@ -274,6 +274,7 @@ module.exports = {
       };
 
       // var deferred = sails.helpers.sendgrid.sendHtmlEmail.with(messageData);
+      console.log(messageData);
       const deferred = transporter.sendMail(messageData);
       if (ensureAck) {
         await deferred;

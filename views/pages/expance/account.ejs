@@ -1,15 +1,130 @@
 <%- include ('../../partials/header.ejs') %>
+  <% if(typeof patner != 'undefined'){%>
+    <div class="container pt-5 pb-4">
+      <div class="row">
+        <div class="container col-11">
+          <h1> Hello Partner , <%- patner.fullName %></h1>
+          <h2>Account - <strong><%- account.accountName %></strong></h2>
+        <hr />
+        <p>
+          Welcome to account page of <strong>Expances Manager</strong>,here you can show
+          , add and edit expance for user <%- user.fullName %> 
+        </p>
+        </div>
+        <div class="col-1">
+          <a class="btn btn-outline-secondary mt-4" href="/user/<%- patner.id %>">Back</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <hr />
+      <div class="container card">
+        <div class="row">
+          <div class="card-body">
+            <div class="d-flex flex-row justify-content-between">
+              <h5> List Of All Expances.</h5>
+              <a type="button" href="/user/<%- user.id%>/account/<%- account.id%>/expance/create" class="btn border-success rounded text-success">&#10010;</a>
+            </div>
+            <% if(typeof expances != 'undefined' && expances.length){%>
+              <ul class="list-group mt-2">
+                  <% for(let i=0 ; i<expances.length ; i++ ) {%>
+  
+                    <%if(expances[i].isPatner == false && expances[i].isDebited == false){%>
+                      <li class="list-group-item list-group-item-success">
+                        <div class="row">
+                          <div class="col-10">
+                            <strong>You - <%- expances[i].amount %></strong>
+                          </div>
+                          <button type="button" id='/account/<%- expances[i].accountId %>/edit/<%- expances[i].id %>/1' class="close" data-dismiss="alert" aria-label="Close" onclick="expanceEditClicked(this.id)">
+                            <span aria-hidden="true">&#9998;</span>
+                          </button>
+                        </div>
+                      </li>
+                    <%}%>
+  
+                    <%if(expances[i].isPatner == false && expances[i].isDebited == true){%>
+                      <li class="list-group-item list-group-item-danger">
+                        <div class="row">
+                          <div class="col-10">
+                            <strong>You - <%- expances[i].amount %></strong>
+                          </div>
+                          <button type="button" id='/account/<%- expances[i].accountId %>/edit/<%- expances[i].id %>/2' class="close" data-dismiss="alert" aria-label="Close" onclick="expanceEditClicked(this.id)">
+                            <span aria-hidden="true">&#9998;</span>
+                          </button>
+                        </div>
+                      </li>
+                    <%}%>
+  
+                    <%if(expances[i].isPatner == true && expances[i].isDebited == false){%>
+                      <li class="list-group-item list-group-item-success">
+                        <div class="row">
+                          <div class="col-10">
+                            <strong><%- expances[i].patnerEmail %> - <%- expances[i].amount %></strong>
+                          </div>
+                          <button type="button" id='/account/<%- expances[i].accountId %>/edit/<%- expances[i].id %>/3' class="close" data-dismiss="alert" aria-label="Close" onclick="expanceEditClicked(this.id)">
+                            <span aria-hidden="true">&#9998;</span>
+                          </button>
+                        </div>
+                      </li>
+                    <%}%>
+  
+                    <%if(expances[i].isPatner == true && expances[i].isDebited == true){%>
+                      <li class="list-group-item list-group-item-danger">
+                        <div class="row">
+                          <div class="col-10">
+                            <strong><%- expances[i].patnerEmail %> - <%- expances[i].amount %></strong>
+                          </div>
+                          <button type="button" id='/account/<%- expances[i].accountId %>/edit/<%- expances[i].id %>/4' class="close" data-dismiss="alert" aria-label="Close" onclick="expanceEditClicked(this.id)">
+                            <span aria-hidden="true">&#9998;</span>
+                          </button>
+                        </div>
+                      </li>
+                    <%}%>
+  
+                  <%}%>
+              </ul>
+            <%}else{%>
+              <p><strong>No Any Record Yet!</strong></p>
+            <%}%>
+          </div>
+        </div>
+        <hr />
+        <h5> List of Patners Of This Account :</h5>
+        <% if(typeof patnerWiths != 'undefined' && patnerWiths.length){ %>
+          <% for(let i=0;i<patnerWiths.length;i++){%>
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title"><%-patnerWiths[i].patnerEmail %></h5>
+              <p class="card-text">Acount <strong><%- account.accountName %></strong> is Connected With Patner <strong><%-patnerWiths[i].patnerEmail %></strong>.</p>
+            </div>
+          </div>
+          <%}%>
+        <% } else {%>
+            <p><strong> No Any Patner Accounts! </strong></p>
+        <% } %>
+      </div>
+    </div>
+    <%}else{%>
   <div class="container pt-5 pb-4">
-    <h1>Account - <strong><%- account.accountName%></strong></h1>
-    <hr />
-    <p>
-      Welcome to account page of <strong>Expance Manager</strong>,here you can show
-      your accounts and request of account sharing.
-    </p>
-    <p>
-      By just click you can Accept or Reject those.And you can edit in you as
-      well as patners account.
-    </p>
+    <div class="row">
+      <div class="container col-11">
+        <h1>Account - <strong><%- account.accountName%></strong></h1>
+      <hr />
+      <p>
+        Welcome to account page of <strong>Expances Manager</strong>,here you can show
+        your accounts and request of account sharing.
+      </p>
+      <p>
+        By just click you can Accept or Reject those.And you can edit in you as
+        well as patners account.
+      </p>
+      </div>
+      <div class="col-1">
+        <a class="btn btn-outline-secondary mt-4" href="/user/<%- user.id %>">Back</a>
+      </div>
+    </div>
+    
 
     <!-- <div class="buttons">
       <a class="btn btn-info" href="/account/profile">Update my email</a>
@@ -20,80 +135,75 @@
     <hr />
     <div class="container card">
       <div class="row">
-        <p> List Of All Expances.</p>
         <div class="card-body col-7">
-
-          <!-- for test -->
-          <ul class="list-group">
-            <li class="list-group-item list-group-item-danger">
-              <div class="row">
-                <strong>Holy guacamole!</strong>
-                <a type="button" href='/account/<%- expance[i].accountId %>/edit/<%- expance[i].id %>' class="close mx-5" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&#9998;</span>
-                </a>
-                <a type="button" href='/account/<%- expance[i].accountId %>/delete/<%- expance[i].id %>' class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </a>
-              </div>
-            </li>
-          </ul>
-
+          <div class="d-flex flex-row justify-content-between">
+            <h5> List Of All Expances.</h5>
+            <a type="button" href="/user/<%- user.id%>/account/<%- account.id%>/expance/create" class="btn border-success rounded text-success">&#10010;</a>
+          </div>
           <% if(typeof expances != 'undefined' && expances.length){%>
-            <ul class="list-group">
-                <%- for(let i=0 ; i<expances.length ; i++ ) {%>
+            <ul class="list-group mt-2">
+                <% for(let i=0 ; i<expances.length ; i++ ) {%>
 
-                  <%if(expance[i].isPatner === false && expance[i].isDebited === false){%>
+                  <%if(expances[i].isPatner == false && expances[i].isDebited == false){%>
                     <li class="list-group-item list-group-item-success">
                       <div class="row">
-                        <strong>Holy guacamole!</strong>
-                        <a type="button" href='/account/<%- expance[i].accountId %>/edit/<%- expance[i].id %>' class="close mx-5" data-dismiss="alert" aria-label="Close">
+                        <div class="col-10">
+                          <strong>You - <%- expances[i].amount %></strong>
+                        </div>
+                        <button type="button" id='/account/<%- expances[i].accountId %>/edit/<%- expances[i].id %>/1' class="close mx-4" data-dismiss="alert" aria-label="Close" onclick="expanceEditClicked(this.id)">
                           <span aria-hidden="true">&#9998;</span>
-                        </a>
-                        <a type="button" href='/account/<%- expance[i].accountId %>/delete/<%- expance[i].id %>' class="close" data-dismiss="alert" aria-label="Close">
+                        </button>
+                        <button type="button" id='/account/<%- expances[i].accountId %>/delete/<%- expances[i].id %>/1' class="close" data-dismiss="alert" aria-label="Close" onclick="expanceDeleteClicked(this.id)">
                           <span aria-hidden="true">&times;</span>
-                        </a>
+                        </button>
                       </div>
                     </li>
                   <%}%>
 
-                  <%if(expance[i].isPatner === false && expance[i].isDebited === true){%>
+                  <%if(expances[i].isPatner == false && expances[i].isDebited == true){%>
                     <li class="list-group-item list-group-item-danger">
                       <div class="row">
-                        <strong>Holy guacamole!</strong>
-                        <a type="button" href='/account/<%- expance[i].accountId %>/edit/<%- expance[i].id %>' class="close mx-5" data-dismiss="alert" aria-label="Close">
+                        <div class="col-10">
+                          <strong>You - <%- expances[i].amount %></strong>
+                        </div>
+                        <button type="button" id='/account/<%- expances[i].accountId %>/edit/<%- expances[i].id %>/2' class="close mx-4" data-dismiss="alert" aria-label="Close" onclick="expanceEditClicked(this.id)">
                           <span aria-hidden="true">&#9998;</span>
-                        </a>
-                        <a type="button" href='/account/<%- expance[i].accountId %>/delete/<%- expance[i].id %>' class="close" data-dismiss="alert" aria-label="Close">
+                        </button>
+                        <button type="button" id='/account/<%- expances[i].accountId %>/delete/<%- expances[i].id %>/2' class="close" data-dismiss="alert" aria-label="Close" onclick="expanceDeleteClicked(this.id)">
                           <span aria-hidden="true">&times;</span>
-                        </a>
+                        </button>
                       </div>
                     </li>
                   <%}%>
 
-                  <%if(expance[i].isPatner === true && expance[i].isDebited === false){%>
+                  <%if(expances[i].isPatner == true && expances[i].isDebited == false){%>
                     <li class="list-group-item list-group-item-success">
                       <div class="row">
-                        <strong>Holy guacamole!</strong>
-                        <a type="button" href='/account/<%- expance[i].accountId %>/edit/<%- expance[i].id %>' class="close mx-5" data-dismiss="alert" aria-label="Close">
+                        <div class="col-10">
+                          <strong><%- expances[i].patnerEmail %> - <%- expances[i].amount %></strong>
+                        </div>
+                        <button type="button" id='/account/<%- expances[i].accountId %>/edit/<%- expances[i].id %>/3' class="close mx-4" data-dismiss="alert" aria-label="Close" onclick="expanceEditClicked(this.id)">
                           <span aria-hidden="true">&#9998;</span>
-                        </a>
-                        <a type="button" href='/account/<%- expance[i].accountId %>/delete/<%- expance[i].id %>' class="close" data-dismiss="alert" aria-label="Close">
+                        </button>
+                        <button type="button" id='/account/<%- expances[i].accountId %>/delete/<%- expances[i].id %>/3' class="close" data-dismiss="alert" aria-label="Close" onclick="expanceDeleteClicked(this.id)">
                           <span aria-hidden="true">&times;</span>
-                        </a>
+                        </button>
                       </div>
                     </li>
                   <%}%>
 
-                  <%if(expance[i].isPatner === true && expance[i].isDebited === true){%>
+                  <%if(expances[i].isPatner == true && expances[i].isDebited == true){%>
                     <li class="list-group-item list-group-item-danger">
                       <div class="row">
-                        <strong>Holy guacamole!</strong>
-                        <a type="button" href='/account/<%- expance[i].accountId %>/edit/<%- expance[i].id %>' class="close mx-5" data-dismiss="alert" aria-label="Close">
+                        <div class="col-10">
+                          <strong><%- expances[i].patnerEmail %> - <%- expances[i].amount %></strong>
+                        </div>
+                        <button type="button" id='/account/<%- expances[i].accountId %>/edit/<%- expances[i].id %>/4' class="close mx-4" data-dismiss="alert" aria-label="Close" onclick="expanceEditClicked(this.id)">
                           <span aria-hidden="true">&#9998;</span>
-                        </a>
-                        <a type="button" href='/account/<%- expance[i].accountId %>/delete/<%- expance[i].id %>' class="close" data-dismiss="alert" aria-label="Close">
+                        </button>
+                        <button type="button" id='/account/<%- expances[i].accountId %>/delete/<%- expances[i].id %>/4' class="close" data-dismiss="alert" aria-label="Close" onclick="expanceDeleteClicked(this.id)">
                           <span aria-hidden="true">&times;</span>
-                        </a>
+                        </button>
                       </div>
                     </li>
                   <%}%>
@@ -105,19 +215,19 @@
           <%}%>
         </div>
         <div class="card-body col-5">
-          <h5> List of Requests To Access This Acount :</h5>
+          <h5> List of partner request to panding :</h5>
           <% if(typeof pandingPatner != 'undefined' && pandingPatner.length){%>
             <%for(let i=0;i<pandingPatner.length;i++){%>
             <div class="alert alert-info alert-dismissible fade show" role="alert">
               <strong>Request By <%- pandingPatner[i].patnerEmail %></strong>
-                <a type="button" href="/account/<%- account.id %>/patner/accept/<%- pandingPatner[i].id%>" class="close mx-5" data-dismiss="alert" aria-label="Close">
+                <a type="button" id="/account/<%- account.id %>/patner/accept/<%- pandingPatner[i].id%>" onclick="alertAcceptClicked(this.id)" href="/account/<%- account.id %>/patner/accept/<%- pandingPatner[i].id%>" class="close mx-5" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&check;</span>
                 </a>
-                <a type="button" href="/account/<%- account.id %>/patner/delete/<%- pandingPatner[i].id%>" class="close" data-dismiss="alert" aria-label="Close">
+                <a type="button" id="/account/<%- account.id %>/patner/delete/<%- pandingPatner[i].id%>" onclick="alertPatnerReject(this.id)" href="/account/<%- account.id %>/patner/delete/<%- pandingPatner[i].id%>" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </a>
             </div>
-            <%}%>
+          <%}%>
           <%}else{%>
             <p><strong> No Any Patner Request!</strong></p>
           <%}%>
@@ -132,15 +242,66 @@
             <h5 class="card-title"><%-patnerWiths[i].patnerEmail %></h5>
             <p class="card-text">Acount <strong><%- account.accountName %></strong> is Connected With Patner <strong><%-patnerWiths[i].patnerEmail %></strong>.</p>
             <p class="card-text">If you wont to access back then simply click button! </p>
-            <a href='/account/<%- account.id%>/patner/delete/<%patnerWiths[i].id%>' class="btn btn-danger">Access Back</a>
+            <button id='/account/<%- account.id%>/patner/delete/<%- patnerWiths[i].id%>' onclick="patnerDeleteClicked(this.id)" class="btn btn-outline-danger">Access Back</button>
           </div>
         </div>
         <%}%>
-        <% } else {%>
+      <% } else {%>
           <p><strong> No Any Patner Accounts! </strong></p>
-        <% } %>
+      <% } %>
     </div>
   </div>
+  <%}%>
+  <script>
+    function patnerDeleteClicked(url) {
+      let isExecuted = confirm(`Are you sure about Logout?`);
+      if (isExecuted) {
+        userAction = async ()=>{
+        let response = await fetch(`${url}`,{
+          method:'GET',
+          headers:{
+            'Accept': "*/*,application/json",
+            'Authorization':`Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        location.reload();
+      }
+      userAction()
+      }
+    }
+    function expanceEditClicked(url){
+      url = url.slice(0,-2);
+      userAction = async ()=>{
+            let response = await fetch(`${url}`,{
+              method:'GET',
+              headers:{
+                'Accept': "*/*",
+                'Authorization':`Bearer ${localStorage.getItem('token')}`
+              }
+            });
+            location.href = `http://localhost:1337${url}`;
+          }
+          userAction()
+    }
+
+    function expanceDeleteClicked(url){
+      url = url.slice(0,-2);
+      let isExecuted = confirm(`Are you sure about Logout?`);
+      if (isExecuted) {
+        userAction = async ()=>{
+              let response = await fetch(`${url}`,{
+                method:'GET',
+                headers:{
+                  'Accept': "*/*,application/json",
+                  'Authorization':`Bearer ${localStorage.getItem('token')}`
+                }
+              });
+              location.reload();
+            }
+            userAction()
+      }
+    }
+  </script>
   <!-- <script>
     <% if(typeof acount != 'undefined' && account.length){%>
       localStorage.setItem('account','<%- acount.id %>')

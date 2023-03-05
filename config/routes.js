@@ -18,20 +18,43 @@ module.exports.routes = {
   * `assets` directory)                                                      *
   *                                                                          *
   ***************************************************************************/
-
   // 'GET /welcome': 'UserController.getwelcomePage',
   'GET /': 'UserController.getwelcomePage',
   // 'GET /': {view:'pages/expance/sendPatnerRequest'},
   // 'GET /account':{view:'pages/expance/account'},
   // 'GET /account':'AccountController.getAccountView',
+  // 'GET /account/:accountId/edit/:expanceId':'',//edit expance expanceController view
+
+  // 'GET /user/:userId/account/:accountId/patners'
   'GET /user/:id':'UserController.getUserPage',
+  // 'GET /account/:id':{action:'account/getaccountofuser'},
   'GET /account/:id':'AccountController.getAccountOfUser',
+  'GET /user/:userId/account/:id':'AccountController.getAccountOfUser',
   'GET /ragister':{view:'pages/ragister'},
   'GET /login':{view:'pages/login'},
+  'GET /user/logOut':'UserController.logOut',
+  'GET /user/:userId/patner/create':'PatnerController.getPatnerPage',
+  'GET /user/:userId/account/:accountId/expance/create': 'ExpanceController.getExpanceCreatePage',
+  'GET /account/:accountId/edit/:expanceId': 'ExpanceController.getExpanceCreatePage',
+  'GET /user/:userId/account/create': 'AccountController.getAccountPage',
+  'GET /user/:userId/accounts':'AccountController.getAllAccountOfSelectUser',//get list of accountName and id
+  'GET /account/:accountId/patner/accept/:patnerId': 'PatnerController.reqAccept',//Accept req. database -> true
+  'GET /user/:userId/patner/accept/:patnerId': 'PatnerController.reqAccept',//Accept req. of user from user -> true
+  'GET /user/:userId/account/edit/:accountId':'AccountController.getAccountPage',//get page
 
   'POST /login': 'UserController.loginUser',
-  'POST /ragister':'UserController.ragisterUser',
+  'POST /ragister': 'UserController.ragisterUser',
+  'POST /user/:userId/account/create': 'AccountController.createNewAccount',//create account
+  'POST /user/:userId/account/patner/create':'PatnerController.addNewPatnerReq',//create patner
+  'POST /user/:userId/account/:accountId/expance/create':'ExpanceController.createExpance',//create Expance
+  'POST /user/:userId/account/:accountId/expance/edit/:expanceId':'ExpanceController.editExpance',//edit expance
+  'POST /account/:accountId/edit/:expanceId': 'ExpanceController.editExpance',//edit expance 
+  'POST /user/:userId/account/edit/:accountId':'AccountController/editAccount',//update account
 
+  //DELETE
+  'GET /account/:accountId/delete/:expanceId':{action:'expance/deleteexpance'},//Delete expance
+  'GET /account/:accountId/patner/delete/:patnerId':{action:'patner/onrejectreq'},//Delete patner of account -> reject
+  'GET /user/:userId/patner/delete/:patnerId':{action:'patner/onrejectreq'},//Delete patner
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *

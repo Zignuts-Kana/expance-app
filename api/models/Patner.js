@@ -31,28 +31,27 @@ module.exports = {
 
   accountId: {
     model: 'Account',
-    required:true
   },
 
-  patnersId: { model: 'User',
-    required:true },
+  patnerId: {
+    model: 'User',
+  },
 
-  patnerEmail:{
-    type:'string',
+  patnerEmail: {
+    type: 'string',
     isEmail: true,
   },
 
   owner: {
     model: 'User',
-    required:true
   },
 
   accountName: {
     type: 'string',
   },
 
-  accountNumber:{
-    type:'number',
+  accountNumber: {
+    type: 'number',
   }
 };
 

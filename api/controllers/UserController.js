@@ -8,7 +8,7 @@ const bcryptjs = require('bcryptjs');
 module.exports = {
   getAllUser : async (req,res)=>{
     try {
-      const user = await User.find().select('emailAddress fullname patnerOfAccounts');
+      const user = await User.find();
       console.log(user);
       // res.view('')
     } catch (error) {
@@ -18,13 +18,16 @@ module.exports = {
   },getUserPage:async(req,res)=>{
     try {
       const id = req.params.id;
-      console.log(id);
       const user = await User.findOne({id:id});
+      if (!user) {
+        return res.status(400).send({Message:'Error to fatch data relogin!'})
+      }
       const accounts = await Account.find({owner:id});
-      const patners = await Patner.find({patnerEmail:user.emailAddress});
-      const patnerWiths = patners.filter((patner)=> patner.isAccept === true);
-      const newReqs = patners.filter((patner)=> patner.isAccept === false);
-      res.view('pages/expance/welcome',{user,accounts,patnerWiths,newReqs,token:user.authToken},{async:true});
+      const patners = await Patner.find({owner:id});
+      const patnerWiths = await Patner.find({patnerEmail:user.emailAddress,isAccept:true});
+      const newReq = patners.filter((patner)=> patner.isAccept == false);
+      
+      res.view('pages/expance/welcome',{user,accounts,storeUserAndToken:user,patnerWiths,newReq});
     } catch (error) {
       console.log(error);
       return res.status(500).send(error);
@@ -45,7 +48,7 @@ module.exports = {
   deleteUser : async(req,res)=>{
     try {
       const id = req.params.id;
-      const deletedUser = await User.delete({id}).fetch();
+      const deletedUser = await User.destroy({id}).fetch();
       console.log(deletedUser);
     } catch (error) {
       console.log(error);
@@ -63,7 +66,6 @@ module.exports = {
       let user = await User.create({fullName:name,emailAddress:email,password:hashPassword}).fetch();
       const token = sails.helpers.jwtTokenGenerater(user.id);
       user = await User.update({id:user.id}).set({authToken:token.token}).fetch();
-      console.log(user);
       //send Welcome mail
       sails.helpers.emailSender.with({
         to: user[0].emailAddress,
@@ -99,7 +101,7 @@ module.exports = {
         return res.status(401).view('500.ejs', { error: 'Credencials Miss Mach!' });
       }
 
-      const token = sails.helpers.jwtTokenGenerater(user._id);
+      const token = sails.helpers.jwtTokenGenerater(user.id);
       user = await User.update({id:user.id}).set({authToken:token.token}).fetch();
       user = user[0];
       return res.redirect(`/user/${user.id}`);
@@ -111,7 +113,16 @@ module.exports = {
   },getwelcomePage:async (req,res)=>{
     console.log(req.user);
     res.view('pages/expance/welcome');
-  },
+  },logOut:async(req,res)=>{
+    try {
+      const user = req.user;
+      await User.update({id:user.id}).set({authToken:''}).fetch();
+      return res.status(200).json('User logout Successfully!')
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send({Error:error});
+    }
+  }
 
 };
 

@@ -24,9 +24,11 @@ module.exports.policies = {
   },
   ExpanceController:{
     '*':'is-logged-in',
+    'getExpanceCreatePage':true,
   },
   PatnerController:{
     '*':'is-logged-in',
+    'getPatnerPage':true,
   },
   UserController:{
     '*':'is-logged-in',
