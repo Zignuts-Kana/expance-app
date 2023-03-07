@@ -44,9 +44,17 @@ module.exports = {
       //check for owner and give access
       const user = await User.findOne({id:account.owner});
       let expances = await Expance.find({accountId:id});
+      let credit=0; let debit=0;
       if (patner) {
         expances = expances.filter((expance)=>expance.patnerId == userId);
       }
+      expances.forEach(expance => {
+        if (expance.isDebited) {
+          debit = debit+expance.amount;
+        }else{
+          credit = credit+expance.amount;
+        }
+      });
       const allRequest = await Patner.find({accountId:id});
       const acceptPatner = allRequest.filter((request)=>{
         return request.isAccept == true;
@@ -55,7 +63,7 @@ module.exports = {
         return request.isAccept != true && (request.owner == account.owner) && (id == request.accountId);
       });
       //set isPatner in front for patner tranjection.
-      return res.view('pages/expance/account',{user,storeUserAndToken:patner?patner:user,account,expances,pandingPatner,patnerWiths:acceptPatner,patner:patner?patner:undefined});
+      return res.view('pages/expance/account',{user,storeUserAndToken:patner?patner:user,account,expances,pandingPatner,patnerWiths:acceptPatner,patner:patner?patner:undefined,debit,credit});
     } catch (error) {
       console.log(error);
       return res.status(500).send(error);
@@ -96,7 +104,11 @@ module.exports = {
       }
 
       const createAccount = await Account.create({accountNumber,owner:user.id,accountName}).fetch();
-      user.accounts.push(createAccount.id);
+      if(user.accounts && user.accounts.length){
+        user.accounts.push(createAccount.id);
+      }else{
+        user.accounts = [createAccount.id];
+      }
       await User.update({id:user.id}).set(user);
       // return res.view('pages/expance/account',{expances:[],pandingPatner:[],AcceptPatner:[]});
       return res.redirect(`/account/${createAccount.id}`);

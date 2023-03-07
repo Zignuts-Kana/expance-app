@@ -10,6 +10,10 @@
           Welcome to account page of <strong>Expances Manager</strong>,here you can show
           , add and edit expance for user <%- user.fullName %> 
         </p>
+        <div class="d-flex flex-row justify-content-around">
+        <button class="btn btn-outline-success mt-4" disabled>Credits - <%- credit %></button>
+        <button class="btn btn-outline-danger mt-4" disabled> Debits - <%- debit %></button>
+        </div>
         </div>
         <div class="col-1">
           <a class="btn btn-outline-secondary mt-4" href="/user/<%- patner.id %>">Back</a>
@@ -119,6 +123,10 @@
         By just click you can Accept or Reject those.And you can edit in you as
         well as patners account.
       </p>
+      <div class="d-flex flex-row justify-content-around">
+        <button class="btn btn-outline-success mt-4" disabled>Credits - <%- credit %></button>
+        <button class="btn btn-outline-danger mt-4" disabled> Debits - <%- debit %></button>
+        </div>
       </div>
       <div class="col-1">
         <a class="btn btn-outline-secondary mt-4" href="/user/<%- user.id %>">Back</a>

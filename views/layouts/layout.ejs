@@ -210,9 +210,10 @@
         e.preventDefault();
         const formData = new FormData(createAccountForm);
         let user = localStorage.getItem("user");
-        if (user && account) {
+        if (user) {
           user = JSON.parse(user);
           const userAction = async () => {
+            console.log('req send');
             const response = fetch(
               `http://localhost:1337/user/${user._id}/account/create`,
               {

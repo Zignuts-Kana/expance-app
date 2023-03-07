@@ -10,6 +10,7 @@
  */
 module.exports = async function (req, res, proceed) {
   let loggedInUser;
+  console.log('policie is runing');
   if (req.headers['authorization']) {
     const token = req.headers['authorization'].replace('Bearer ', '');
     const user = await sails.helpers.jwtAuthHelper(token);
