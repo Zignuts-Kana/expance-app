@@ -43,7 +43,7 @@ module.exports = {
       }
       //check for owner and give access
       const user = await User.findOne({id:account.owner});
-      let expances = await Expance.find({accountId:id});
+      let expances = await Expance.find({accountId:id}).sort('createdAt DESC');
       let credit=0; let debit=0;
       if (patner) {
         expances = expances.filter((expance)=>expance.patnerId == userId);
@@ -55,6 +55,7 @@ module.exports = {
           credit = credit+expance.amount;
         }
       });
+      expnaces  = expances.slice(0,10);
       const allRequest = await Patner.find({accountId:id});
       const acceptPatner = allRequest.filter((request)=>{
         return request.isAccept == true;
@@ -116,6 +117,33 @@ module.exports = {
       console.log(error);
       return res.status(500).send(error);
     }
+  },getAllExpanceList:async(req,res)=>{
+    try {
+      const userId = req.params.userId;
+      const user = await User.findOne({id:userId});
+      const accountId = req.params.accountId;
+      const account = await Account.findOne({id:accountId});
+      let patner;
+      if (account.owner !== userId) {
+        patner = user;
+      }
+      let expances = await Expance.find({accountId}).sort('createdAt DESC');
+      let credit=0; let debit=0;
+      if (patner) {
+        expances = expances.filter((expance)=>expance.patnerId == userId);
+      }
+      expances.forEach(expance => {
+        if (expance.isDebited) {
+          debit = debit+expance.amount;
+        }else{
+          credit = credit+expance.amount;
+        }
+      });
+      return res.view('pages/expance/expanceList',{account,user,expances,patner,debit,credit});
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send({Error:error});
+    }
   },
   // getAccountPage:async (req,res)=>{
   //   try {
@@ -136,11 +164,6 @@ module.exports = {
   //     return res.status(500).send(error);
   //   }
   // },
-  shareAccount :async (req,res)=>{
-    //share by deff collection.
-  },getAccountView:async (req,res)=>{
-    res.view('pages/expance/account');
-  }
 
 };
 

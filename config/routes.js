@@ -29,7 +29,7 @@ module.exports.routes = {
   'GET /user/:id':'UserController.getUserPage',
   // 'GET /account/:id':{action:'account/getaccountofuser'},
   'GET /account/:id':'AccountController.getAccountOfUser',
-  'GET /user/:userId/account/:id':'AccountController.getAccountOfUser',
+  'GET /user/:userId/account/:id':'AccountController.getAccountOfUser',//patner page
   'GET /ragister':{view:'pages/ragister'},
   'GET /login':{view:'pages/login'},
   'GET /user/logOut':'UserController.logOut',
@@ -41,6 +41,7 @@ module.exports.routes = {
   'GET /account/:accountId/patner/accept/:patnerId': 'PatnerController.reqAccept',//Accept req. database -> true
   'GET /user/:userId/patner/accept/:patnerId': 'PatnerController.reqAccept',//Accept req. of user from user -> true
   'GET /user/:userId/account/edit/:accountId':'AccountController.getAccountPage',//get page
+  'GET /user/:userId/account/:accountId/expance/list':'AccountController.getAllExpanceList',//list of expance
 
   'POST /login': 'UserController.loginUser',
   'POST /ragister': 'UserController.ragisterUser',
@@ -55,6 +56,8 @@ module.exports.routes = {
   'GET /account/:accountId/delete/:expanceId':{action:'expance/deleteexpance'},//Delete expance
   'GET /account/:accountId/patner/delete/:patnerId':{action:'patner/onrejectreq'},//Delete patner of account -> reject
   'GET /user/:userId/patner/delete/:patnerId':{action:'patner/onrejectreq'},//Delete patner
+  'GET /user/:userId/account/:accountId/delete':{action:'account/deleteAccount'},//Delete Account
+
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *

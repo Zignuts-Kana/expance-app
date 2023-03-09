@@ -28,6 +28,7 @@
           <div class="card-body">
             <div class="d-flex flex-row justify-content-between">
               <h5> List Of All Expances.</h5>
+              <a type="button" href="/user/<%- user.id%>/account/<%- account.id%>/expance/list" class="btn border-secondery rounded text-success">Show All</a>
               <a type="button" href="/user/<%- user.id%>/account/<%- account.id%>/expance/create" class="btn border-success rounded text-success">&#10010;</a>
             </div>
             <% if(typeof expances != 'undefined' && expances.length){%>
@@ -146,6 +147,7 @@
         <div class="card-body col-7">
           <div class="d-flex flex-row justify-content-between">
             <h5> List Of All Expances.</h5>
+            <a type="button" href="/user/<%- user.id%>/account/<%- account.id%>/expance/list" class="btn btn-outline-secondary rounded ">Show All</a>
             <a type="button" href="/user/<%- user.id%>/account/<%- account.id%>/expance/create" class="btn border-success rounded text-success">&#10010;</a>
           </div>
           <% if(typeof expances != 'undefined' && expances.length){%>

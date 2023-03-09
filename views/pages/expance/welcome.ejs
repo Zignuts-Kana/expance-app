@@ -25,13 +25,16 @@
             <h5> List of User Accounts</h5>
             <a type="button" href='<%- user.id %>/account/create' class="btn border-success rounded text-success">&#10010;</a>
           </div>
-          <div class="row">
+          <div class="container row">
             <%if(typeof accounts != 'undefined' && accounts.length){%>
               <% for(let i=0;i<accounts.length;i++) {%>
                 <div class="col-6">
                   <div class="card" style="width: 18rem;">
                     <div class="card-body">
+                      <div class="d-flex flex-row justify-content-between">
                       <h5 class="card-title"><%- accounts[i].accountName %></h5>
+                      <button class="btn border-danger rounded" id="/user/<%- user.id %>/account/<%- accounts[i].id %>/delete" onclick="deleteAccountClicked(this.id)">&#10006;</button>
+                      </div>
                       <p class="card-text"><%- accounts[i].accountNumber %></p>
                       <div class="row">
                         <div class="col-6">
@@ -101,6 +104,22 @@
     </div>
   </div>
   <script>
+    function deleteAccountClicked(url){
+      let isExecuted = confirm(`Are you sure about Logout?`);
+      if (isExecuted) {
+        userAction = async ()=>{
+        let response = await fetch(`${url}`,{
+          method:'GET',
+          headers:{
+            'Accept': "*/*,application/json",
+            'Authorization':`Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        location.reload();
+      }
+      userAction()
+      }
+    }
     function patnerDeleteClicked(url) {
       let isExecuted = confirm(`Are you sure about Logout?`);
       if (isExecuted) {

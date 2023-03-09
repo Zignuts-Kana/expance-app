@@ -22,6 +22,7 @@ module.exports.policies = {
     '*': 'is-logged-in',
     'getAccountOfUser':true,
     'getAccountPage':true,
+    'getAllExpanceList':true,
   },
   ExpanceController:{
     '*':'is-logged-in',
