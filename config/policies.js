@@ -19,14 +19,18 @@ module.exports.policies = {
 
   // '*': true,
   AccountController:{
-    '*': true,
-    'getAccountOfUser':true
+    '*': 'is-logged-in',
+    'getAccountOfUser':true,
+    'getAccountPage':true,
+    'getAllExpanceList':true,
   },
   ExpanceController:{
     '*':'is-logged-in',
+    'getExpanceCreatePage':true,
   },
   PatnerController:{
     '*':'is-logged-in',
+    'getPatnerPage':true,
   },
   UserController:{
     '*':'is-logged-in',
@@ -35,6 +39,6 @@ module.exports.policies = {
     'getUserPage':true,
     // "getwelcomePage":true,
   },
-  'expance/*':'is-logged-in',
+  // 'expance/*':'is-logged-in',
 
 };

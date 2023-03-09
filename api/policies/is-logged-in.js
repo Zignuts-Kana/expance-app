@@ -10,11 +10,12 @@
  */
 module.exports = async function (req, res, proceed) {
   let loggedInUser;
+  console.log('policie is runing');
   if (req.headers['authorization']) {
     const token = req.headers['authorization'].replace('Bearer ', '');
     const user = await sails.helpers.jwtAuthHelper(token);
-    if (!user) {
-      return next();
+    if (!user && !user.token) {
+      return res.redirect('/login');
     }
     loggedInUser = user;
     req.session.userId = user.id;
@@ -22,8 +23,8 @@ module.exports = async function (req, res, proceed) {
   if (req.query.token) {
     const token = decodeURIComponent(req.query.token);
     const user = await sails.helpers.jwtAuthHelper(token);
-    if (!user) {
-      return next();
+    if (!user && !user.token) {
+      return res.redirect('/login');
     }
     loggedInUser = user;
     req.session.userId = user.id;

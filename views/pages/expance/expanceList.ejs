@@ -1,0 +1,99 @@
+<%- include ('../../partials/header.ejs') %>
+  <div class="container pt-5 pb-4">
+    <div class="row">
+      <div class="container col-11">
+        <h1>Account - <strong><%- account.accountName%></strong></h1>
+      <hr />
+      <p>
+        Welcome to account page of <strong>Expances Manager</strong>,here you can show
+        your accounts and request of account sharing.
+      </p>
+      <div class="d-flex flex-row justify-content-around">
+        <button class="btn btn-outline-success mt-4" disabled>Credits - <%- credit %></button>
+        <button class="btn btn-outline-danger mt-4" disabled> Debits - <%- debit %></button>
+        </div>
+      </div>
+      <% if(typeof patner != 'undefined' && patner.length) {%>
+      <div class="col-1">
+        <a class="btn btn-outline-secondary mt-4" href="/user/<%- user.id %>/account/<%- account.id %>">Back</a>
+      </div>
+      <% } else {%>
+        <div class="col-1">
+          <a class="btn btn-outline-secondary mt-4" href="/account/<%- account.id %>">Back</a>
+        </div>
+      <% } %>
+    </div>
+    
+
+    <!-- <div class="buttons">
+      <a class="btn btn-info" href="/account/profile">Update my email</a>
+      <button class="btn btn-outline-info ml-2" @click="clickOpenExampleModalButton()">Open a modal</button>
+    </div> -->
+  </div>
+  <div class="container">
+    <hr />
+    <div class="container card">
+      <div class="row">
+        <div class="card-body col-12">
+          <div class="d-flex flex-row justify-content-between">
+            <h5> List Of All Expances.</h5>
+          </div>
+          <% if(typeof expances != 'undefined' && expances.length){%>
+            <ul class="list-group mt-2">
+                <% for(let i=0 ; i<expances.length ; i++ ) {%>
+
+                  <%if(expances[i].isPatner == false && expances[i].isDebited == false){%>
+                    <li class="list-group-item list-group-item-success">
+                      <div class="row">
+                        <div class="col-12">
+                          <strong>You - <%- expances[i].amount %></strong>
+                        </div>
+                      </div>
+                    </li>
+                  <%}%>
+
+                  <%if(expances[i].isPatner == false && expances[i].isDebited == true){%>
+                    <li class="list-group-item list-group-item-danger">
+                      <div class="row">
+                        <div class="col-12">
+                          <strong>You - <%- expances[i].amount %></strong>
+                        </div>
+                      </div>
+                    </li>
+                  <%}%>
+
+                  <%if(expances[i].isPatner == true && expances[i].isDebited == false){%>
+                    <li class="list-group-item list-group-item-success">
+                      <div class="row">
+                        <div class="col-12">
+                          <strong><%- expances[i].patnerEmail %> - <%- expances[i].amount %></strong>
+                        </div>
+                      </div>
+                    </li>
+                  <%}%>
+
+                  <%if(expances[i].isPatner == true && expances[i].isDebited == true){%>
+                    <li class="list-group-item list-group-item-danger">
+                      <div class="row">
+                        <div class="col-12">
+                          <strong><%- expances[i].patnerEmail %> - <%- expances[i].amount %></strong>
+                        </div>
+                      </div>
+                    </li>
+                  <%}%>
+
+                <%}%>
+            </ul>
+          <%}else{%>
+            <p><strong>No Any Record Yet!</strong></p>
+          <%}%>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <script>
+    <% if(typeof acount != 'undefined' && account.length){%>
+      localStorage.setItem('account','<%- acount.id %>')
+      <% } %>
+  </script> -->
+  <%- include ('../../partials/footer.ejs') %>

@@ -12,17 +12,22 @@
 <form class="border border-secondary rounded py-4" id="editExpanceForm" style="width: 60%;">
     <div class="container">
         <div class="form-group">
-            <label for="exampleInputPassword1">Amount</label>
+            <label for="amount">Amount</label>
             <input type="number" class="form-control" id="amount" name="amount" value='<%- expance.amount %>' required>
           </div>
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="isDebited" name="isDebited" required>
-            <label class="form-check-label" for="isDebited">Amount Debited ?</label>
+            <% if (expance.isDebited == true){%>
+              <input type="checkbox" class="form-check-input" id="isDebited" name="isDebited" checked>
+              <label class="form-check-label" for="isDebited">Amount Debited ?</label>
+              <%}else{%>
+                <input type="checkbox" class="form-check-input" id="isDebited" name="isDebited">
+                <label class="form-check-label" for="isDebited">Amount Debited ?</label>
+            <%}%>
           </div>
-          <button type="submit" class="btn btn-primary btn-block mb-4">Update</button>
+          <button type="submit" class="btn btn-outline-success btn-block mb-4">Update</button>
     </div>
 </form>
-<button class="btn btn-secondery mt-4" onclick="history.back()">Back</button>
+<button class="btn btn-outline-success-secondary mt-4" onclick="history.back()">Back</button>
 </div>
 <!-- <script>
     const editExpanceForm = document.getElementById("editExpanceForm");

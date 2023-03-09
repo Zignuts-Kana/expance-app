@@ -1342,7 +1342,7 @@ return new(b[["Active"].concat("Object").join("X")])("Microsoft.XMLHTTP")}catch(
     /**
      * Simulate a DELETE request to sails
      * e.g.
-     *    `socket.delete('/event', $spinner.hide)`
+     *    `socket.destroy('/event', $spinner.hide)`
      *
      * @api public
      * @param {String} url    ::    destination URL
